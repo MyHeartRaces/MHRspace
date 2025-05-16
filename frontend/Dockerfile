@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 # Install dependencies and required packages
 RUN npm install && \
-    npm install --save-dev @types/js-cookie && \
+    npm install --save-dev @types/js-cookie autoprefixer && \
     npm install @hookform/resolvers
 
 # Create a more robust ESLint configuration
