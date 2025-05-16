@@ -28,4 +28,5 @@ RUN cat .eslintrc.json
 RUN npm run build
 
 EXPOSE 3000
-CMD ["npm", "start"]
+# Change the start command to use the standalone server instead of 'next start'
+CMD ["node", ".next/standalone/server.js"]
