@@ -1,0 +1,53 @@
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+  backend:
+    build:
+      context: ./backend
+    env_file: .env
+    depends_on:
+      - db
+    restart: unless-stopped
+    ports:
+      - "8000:8000"  # Expose backend port to host
+  frontend:
+    build:
+      context: ./frontend
+    env_file: .env
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"  # Expose frontend port to host
+    restart: unless-stopped
+  outline:
+    image: outlinewiki/outline:latest
+    env_file: .env
+    environment:
+      ENABLE_UPDATES: "false"
+      PGSSLMODE: "disable"
+      SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DATABASE_URL: postgres://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
+      URL: ${NEXT_PUBLIC_OUTLINE_URL}
+      UTILS_SECRET: ${OUTLINE_UTILS_SECRET:-defaultsecretvalue}
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      - db
+      - redis
+    restart: unless-stopped
+    ports:
+      - "3001:3000"  # Expose outline port to host, on different port
+volumes:
+  db-data:
+  redis-data:
