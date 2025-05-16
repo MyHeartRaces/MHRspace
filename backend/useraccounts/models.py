@@ -1,9 +1,9 @@
-from django.db import models
 from django.contrib.auth.models import User
-import pyotp
+from django.db import models
+import uuid, pyotp
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     totp_secret = models.CharField(max_length=32, blank=True, null=True)
 
     def generate_totp_secret(self):
@@ -17,6 +17,4 @@ class Profile(models.Model):
         totp = pyotp.TOTP(self.totp_secret)
         return totp.verify(code, valid_window=1)
 
-    def disable_totp(self):
-        self.totp_secret = None
-        self.save(update_fields=["totp_secret"])
+    def __str__(self): return f"Profile<{self.user.username}>"
