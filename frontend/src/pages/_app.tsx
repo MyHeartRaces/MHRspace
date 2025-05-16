@@ -1,6 +1,6 @@
 import { AppProps } from 'next/app';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import EnhancedNavbar from '@/components/EnhancedNavbar';
+import EnhancedNavbar from '@/components/Navbar';
 import '../styles/globals.css';
 
 // Create a client
