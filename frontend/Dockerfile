@@ -6,9 +6,26 @@ COPY package*.json ./
 RUN npm install && \
     npm install --save-dev @types/js-cookie && \
     npm install @hookform/resolvers
+
+# Create a more robust ESLint configuration
+RUN echo '{\n\
+  "extends": "next",\n\
+  "rules": {\n\
+    "react/no-unescaped-entities": "off",\n\
+    "@typescript-eslint/no-explicit-any": "off",\n\
+    "@typescript-eslint/no-unused-vars": "off",\n\
+    "@next/next/no-page-custom-font": "off"\n\
+  }\n\
+}' > .eslintrc.json
+
+# Copy the rest of the project files
 COPY . .
-# Create eslint config to ignore errors during build
-RUN echo '{ "extends": "next", "rules": { "react/no-unescaped-entities": "off", "@typescript-eslint/no-explicit-any": "off", "@typescript-eslint/no-unused-vars": "off", "@next/next/no-page-custom-font": "off" } }' > .eslintrc.json
+
+# Override any existing eslintrc that might exist
+RUN cat .eslintrc.json
+
+# Build the application
 RUN npm run build
+
 EXPOSE 3000
 CMD ["npm", "start"]

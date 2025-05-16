@@ -3,7 +3,6 @@ import GitHubSection from "@/components/GitHubSection";
 import LinkBlock from "@/components/LinkBlock";
 import Link from "next/link";
 import Head from "next/head";
-import EnhancedNavbar from "@/components/EnhancedNavbar";
 
 export default function Home() {
     const { token } = useAuth();
@@ -13,9 +12,6 @@ export default function Home() {
             <Head>
                 <title>MHRspace - Your Personal Digital Dashboard</title>
                 <meta name="description" content="A secure, personal dashboard to manage your notes, track your GitHub projects, and keep everything you need in one place." />
-                <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-                <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
             </Head>
             {/* Hero Section */}
             <section className="py-20 px-4">
