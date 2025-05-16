@@ -15,6 +15,13 @@ export const useAuth = () => {
         setLoading(false);
     }, []);
 
+    // Logout function
+    const logout = useCallback(() => {
+        Cookies.remove("access");
+        Cookies.remove("refresh");
+        setToken(null);
+    }, []);
+
     // Function to refresh the token
     const refreshToken = useCallback(async (): Promise<boolean> => {
         try {
@@ -37,7 +44,7 @@ export const useAuth = () => {
             logout();
             return false;
         }
-    }, []);
+    }, [logout]);
 
     // Login function with 2FA support
     const login = async (username: string, password: string, otp_code = "") => {
@@ -56,13 +63,6 @@ export const useAuth = () => {
             throw error;
         }
     };
-
-    // Logout function
-    const logout = useCallback(() => {
-        Cookies.remove("access");
-        Cookies.remove("refresh");
-        setToken(null);
-    }, []);
 
     // Setup axios interceptor for token refresh
     useEffect(() => {

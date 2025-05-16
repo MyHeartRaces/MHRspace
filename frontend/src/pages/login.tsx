@@ -44,8 +44,9 @@ export default function Login() {
             await login(values.username, values.password, values.otp_code);
             const redirectPath = returnUrl ? String(returnUrl) : "/notes";
             router.push(redirectPath);
-        } catch (err: any) {
-            if (err.response?.status === 401) {
+        } catch (err: unknown) {
+            const error = err as { response?: { status: number } };
+            if (error.response?.status === 401) {
                 setError("Invalid credentials or TOTP code");
             } else {
                 setError("An error occurred. Please try again.");
@@ -111,7 +112,7 @@ export default function Login() {
                 </button>
 
                 <p className="text-sm text-center mt-4">
-                    Don't have an account?{" "}
+                    Don&apos;t have an account?{" "}
                     <Link href="/register" className="text-indigo-600 hover:text-indigo-500">
                         Register
                     </Link>
