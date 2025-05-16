@@ -1,8 +1,4 @@
-#!/usr/bin/env bash
-set -e
-
+#!/bin/bash
 python manage.py migrate --noinput
 python manage.py collectstatic --noinput
-gunicorn mhrspace.wsgi:application \
-         --bind 0.0.0.0:8000 \
-         --workers 3
+gunicorn mhrspace.wsgi:application --bind 0.0.0.0:8000
